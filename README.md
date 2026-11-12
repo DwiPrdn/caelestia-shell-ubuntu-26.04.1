@@ -12,7 +12,7 @@ Caelestia Shell targets Arch Linux and AUR dependencies by default. This reposit
 > [!NOTE]
 > **Tested Environment:**
 > - **OS / Distribution:** Tested on **Xubuntu 26.04.1 LTS** / **Ubuntu 26.04.1 LTS** (Resolute Raccoon). *(Other Ubuntu flavours/variants may work, but differences in default display managers, PAM, or audio daemons may require minor adjustments).*
-> - **Tested Device:** **HP EliteBook 845 G8 Notebook PC** (AMD Ryzen 5 PRO 5650U, AMD Radeon Vega Mobile Graphics, 1920x1080 60Hz display).
+> - **Tested Device:** **HP EliteBook 845 G8** (AMD Ryzen 5 PRO 5650U, AMD Radeon Vega 7, 1920x1080 60Hz display).
 
 ---
 
