@@ -68,7 +68,7 @@ sudo apt install -y \
     hyprland hyprland-protocols hyprland-qtutils hyprwayland-scanner \
     hypridle hyprlock hyprpaper hyprpicker hyprpolkitagent \
     xdg-desktop-portal-hyprland uwsm \
-    waybar dunst fuzzel kitty wlogout swayosd nwg-displays nwg-look \
+    waybar dunst fuzzel kitty alacritty wlogout swayosd nwg-displays nwg-look \
     qt5ct qt6ct pavucontrol
 ```
 
@@ -209,7 +209,35 @@ sudo ldconfig
 
 The pkg-config file installs as **`libcava.pc`**, not `cava.pc`.
 
-### Step 6: Caelestia CLI
+### Step 6: Build m3shapes
+
+Caelestia v2.4.0+ requires M3Shapes, a Qt QML plugin for Material Design 3
+shapes. It is not packaged in Ubuntu:
+
+```bash
+cd ~/caelestia-build
+git clone https://github.com/soramanew/m3shapes.git m3shapes
+cd m3shapes
+cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DINSTALL_QMLDIR=lib/qt6/qml
+cmake --build build
+sudo cmake --install build
+sudo ldconfig
+```
+
+### Step 7: Build gpu-screen-recorder
+
+Caelestia's screen recording card uses `gpu-screen-recorder` under the hood:
+
+```bash
+cd ~/caelestia-build
+git clone --depth 1 https://repo.dec05eba.com/gpu-screen-recorder
+cd gpu-screen-recorder
+meson setup build --prefix=/usr
+ninja -C build
+sudo ninja -C build install
+```
+
+### Step 8: Caelestia CLI
 
 ```bash
 cd ~/caelestia-build
@@ -223,7 +251,7 @@ sudo pip3 install dist/*.whl --break-system-packages --force-reinstall
 > On a desktop install that is harmless, but it is a real system change - use
 > `pipx` instead if you would rather not.
 
-### Step 7: Caelestia Shell
+### Step 9: Caelestia Shell
 
 ```bash
 mkdir -p ~/.config/quickshell
@@ -244,15 +272,29 @@ sudo cmake --install build
 > `VERSION is not set and failed to get from git`. If you already made a
 > shallow clone: `git fetch --unshallow --tags`.
 
-### Step 8: Configuration
+### Step 10: Configuration & System Integration
 
 ```bash
 echo 'export QML_IMPORT_PATH=/usr/lib/qt6/qml' >> ~/.bashrc
-mkdir -p ~/.config/caelestia ~/.config/hypr ~/Pictures/Wallpapers
+mkdir -p ~/.config/caelestia ~/.config/hypr ~/.config/ghostty ~/Pictures/Wallpapers
 
 cp config/26.04/shell.json ~/.config/caelestia/shell.json
+cp config/26.04/cli.json ~/.config/caelestia/cli.json
 cp config/26.04/quickshell/qml_color.json ~/.config/quickshell/qml_color.json
 cp config/26.04/hyprland.conf ~/.config/hypr/hyprland.conf
+cp config/26.04/ghostty/config ~/.config/ghostty/config
+cp config/26.04/starship.toml ~/.config/starship.toml
+cp config/26.04/zshrc ~/.zshrc
+
+# Enable hardware brightness control without root
+sudo chmod u+s /usr/bin/brightnessctl
+
+# Mask waybar so it doesn't conflict
+systemctl --user mask waybar.service
+
+# Configure SDDM (Pixie theme & disable virtual keyboard)
+sudo mkdir -p /etc/sddm.conf.d
+sudo cp config/26.04/sddm/99-theme.conf /etc/sddm.conf.d/99-theme.conf
 
 Hyprland --verify-config   # should print "config ok"
 ```
@@ -656,6 +698,40 @@ prefer it to an absolute path with a username baked in.
 ### The uwsm session fails instantly
 
 `sudo apt install uwsm`, or pick the plain "Hyprland" session. See Step 1.
+
+### SDDM virtual keyboard pops up or screen flickers
+
+Ubuntu Budgie's SDDM defaults enforce `InputMethod=qtvirtualkeyboard`. Disable it by creating `/etc/sddm.conf.d/99-theme.conf` with:
+
+```ini
+[Theme]
+Current=pixie
+CursorTheme=Bibata-Modern-Classic
+CursorSize=24
+
+[General]
+InputMethod=
+GreeterEnvironment=
+
+[X11]
+DisplayCommand=/usr/libexec/budgie-sddm-display-setup
+```
+
+### Logout button hangs or freezes the display
+
+Under UWSM-managed Hyprland, `loginctl terminate-user ""` fails or hangs. Ensure the logout command in `~/.config/caelestia/shell.json` is set to `["uwsm", "stop"]`.
+
+### Screen recording has no audio in Telegram / media players
+
+GPU Screen Recorder defaults to Opus audio in MP4 containers which some players cannot decode. Set `extraArgs` in `~/.config/caelestia/cli.json`:
+
+```json
+{
+  "record": {
+    "extraArgs": ["-ac", "aac"]
+  }
+}
+```
 
 ---
 
