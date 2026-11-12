@@ -9,11 +9,17 @@ An end-to-end, battle-tested installation and configuration setup for running **
 
 Caelestia Shell targets Arch Linux and AUR dependencies by default. This repository provides the complete pipeline, build patches, hardware integration fixes, login manager themes, and preconfigured shell/terminal dots to make it run flawlessly on Ubuntu 26.04.1 LTS.
 
+> [!NOTE]
+> **Tested Environment:**
+> - **OS / Distribution:** Tested on **Xubuntu 26.04.1 LTS** / **Ubuntu 26.04.1 LTS** (Resolute Raccoon). *(Other Ubuntu flavours/variants may work, but differences in default display managers, PAM, or audio daemons may require minor adjustments).*
+> - **Tested Device:** **HP EliteBook 845 G8 Notebook PC** (AMD Ryzen 5 PRO 5650U, AMD Radeon Vega Mobile Graphics, 1920x1080 60Hz display).
+
 ---
 
 ## Table of Contents
 
 - [Quick Start](#quick-start)
+- [Live Preview](#live-preview)
 - [What Has Changed & Improved](#what-has-changed--improved)
   - [1. Hyprland & UWSM Native Integration](#1-hyprland--uwsm-native-integration)
   - [2. Qt 6.10 Compatibility Patch](#2-qt-610-compatibility-patch)
@@ -46,6 +52,34 @@ Once the installation script finishes, log out and select **Hyprland (uwsm-manag
 
 > [!NOTE]
 > For a complete step-by-step breakdown of every build step and dependency on Ubuntu 26.04.1 LTS, see the in-depth manual guide in **[docs/ubuntu-26.04.md](docs/ubuntu-26.04.md)**.
+
+---
+
+## Live Preview
+
+### 1. Control Center, Performance Dashboard & Session Controls (Dark Theme)
+<p align="center">
+  <img src="public/cu1.gif" alt="Caelestia Shell Control Center & Performance Dashboard" width="95%">
+</p>
+<p align="center">
+  <em><a href="public/preview-dashboard-dark.mp4">Watch Full 60fps MP4 Video</a></em>
+</p>
+
+### 2. Desktop Launcher, Material Themes & Fastfetch (Light Theme)
+<p align="center">
+  <img src="public/cu2.gif" alt="Caelestia Shell Launcher & Terminal" width="95%">
+</p>
+<p align="center">
+  <em><a href="public/preview-overview-light.mp4">Watch Full 60fps MP4 Video</a></em>
+</p>
+
+### 3. Ghostty Terminal, Splits, Tabs & Workspace Switcher
+<p align="center">
+  <img src="public/cu3.gif" alt="Ghostty Terminal & Workspaces Overview" width="95%">
+</p>
+<p align="center">
+  <em><a href="public/preview-terminal-workspaces.mp4">Watch Full 60fps MP4 Video</a></em>
+</p>
 
 ---
 
